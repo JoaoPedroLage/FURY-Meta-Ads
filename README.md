@@ -409,7 +409,8 @@ Se um webhook idêntico chegar enquanto um job com esse ID ainda está `waiting`
 
 Você pode testar todos os cenários com `curl`. Se não tiver `curl`, use o [Postman](https://www.postman.com/) ou o [Insomnia](https://insomnia.rest/).
 
-> ✅ Todos os comandos abaixo funcionam no **Windows** (CMD e PowerShell) e no **Unix/macOS** — copie e cole diretamente no terminal.
+> ✅ Todos os comandos abaixo funcionam no **Windows PowerShell** e no **Unix/macOS** — copie e cole diretamente no terminal.  
+> ⚠️ **Windows CMD** (prompt clássico `cmd.exe`) não é suportado — use o **PowerShell**.
 
 ---
 
@@ -418,7 +419,7 @@ Você pode testar todos os cenários com `curl`. Se não tiver `curl`, use o [Po
 **Cenário 1 — Enviar um webhook válido** → Resposta esperada: `202 Accepted`
 
 ```
-curl -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d "{\"adId\":\"ad_001\",\"tenantId\":\"tenant_abc\",\"violationType\":\"PROHIBITED_TERM\",\"severity\":\"HIGH\",\"detectedAt\":\"2024-03-15T10:30:00Z\"}"
+curl -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d '{"adId":"ad_001","tenantId":"tenant_abc","violationType":"PROHIBITED_TERM","severity":"HIGH","detectedAt":"2024-03-15T10:30:00Z"}'
 ```
 
 **Cenário 2 — Consultar o status do job criado acima** → Resposta esperada: `completed` ou `active`
@@ -434,13 +435,13 @@ curl -s http://localhost:3000/jobs/ad_001:tenant_abc
 **Cenário 3 — Payload inválido** (campo `violationType` ausente) → Resposta esperada: `400 Bad Request` com lista de erros por campo
 
 ```
-curl -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d "{\"adId\":\"ad_001\",\"tenantId\":\"tenant_abc\",\"severity\":\"HIGH\",\"detectedAt\":\"2024-03-15T10:30:00Z\"}"
+curl -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d '{"adId":"ad_001","tenantId":"tenant_abc","severity":"HIGH","detectedAt":"2024-03-15T10:30:00Z"}'
 ```
 
 **Cenário 4 — Job duplicado** (rode logo após o Cenário 1, enquanto o job ainda está ativo) → Resposta esperada: `409 Conflict`
 
 ```
-curl -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d "{\"adId\":\"ad_001\",\"tenantId\":\"tenant_abc\",\"violationType\":\"PROHIBITED_TERM\",\"severity\":\"HIGH\",\"detectedAt\":\"2024-03-15T10:30:00Z\"}"
+curl -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d '{"adId":"ad_001","tenantId":"tenant_abc","violationType":"PROHIBITED_TERM","severity":"HIGH","detectedAt":"2024-03-15T10:30:00Z"}'
 ```
 
 ---
