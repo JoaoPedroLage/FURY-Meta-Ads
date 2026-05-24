@@ -1,4 +1,4 @@
-# FURY · Click Hero — Processador de Violações de Anúncios
+# FURY · Click Hero — Pipeline de Moderação de Anúncios
 
 > Desafio Técnico — Full Stack Pleno  
 > Desenvolvido para o projeto **FURY**, um gestor autônomo de tráfego pago movido a IA.
