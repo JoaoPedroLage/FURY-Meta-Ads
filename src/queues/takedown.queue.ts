@@ -22,7 +22,7 @@ export const takedownQueue = new Queue<ViolationPayload>(QUEUE_NAME, {
  * BullMQ will not add a new job if one with the same ID is already waiting or active.
  */
 export async function enqueueTakedown(payload: ViolationPayload): Promise<string> {
-  const jobId = `${payload.adId}:${payload.tenantId}`;
+  const jobId = `${payload.adId}|${payload.tenantId}`;
 
   const existing = await takedownQueue.getJob(jobId);
   if (existing) {
