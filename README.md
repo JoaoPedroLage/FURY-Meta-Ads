@@ -419,8 +419,7 @@ Você pode testar todos os cenários com `curl`. Se não tiver `curl`, use o [Po
 
 PowerShell (Windows):
 ```powershell
-$body = '{"adId":"ad_001","tenantId":"tenant_abc","violationType":"PROHIBITED_TERM","severity":"HIGH","detectedAt":"2024-03-15T10:30:00Z"}'
-curl.exe -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d $body
+$body = '{"adId":"ad_001","tenantId":"tenant_abc","violationType":"PROHIBITED_TERM","severity":"HIGH","detectedAt":"2024-03-15T10:30:00Z"}'; curl.exe -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d $body
 ```
 
 Unix / macOS:
@@ -442,8 +441,7 @@ curl.exe -s http://localhost:3000/jobs/ad_001|tenant_abc
 
 PowerShell (Windows):
 ```powershell
-$body = '{"adId":"ad_001","tenantId":"tenant_abc","severity":"HIGH","detectedAt":"2024-03-15T10:30:00Z"}'
-curl.exe -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d $body
+$body = '{"adId":"ad_001","tenantId":"tenant_abc","severity":"HIGH","detectedAt":"2024-03-15T10:30:00Z"}'; curl.exe -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d $body
 ```
 
 Unix / macOS:
@@ -455,8 +453,7 @@ curl -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: applic
 
 PowerShell (Windows):
 ```powershell
-$body = '{"adId":"ad_001","tenantId":"tenant_abc","violationType":"PROHIBITED_TERM","severity":"HIGH","detectedAt":"2024-03-15T10:30:00Z"}'
-curl.exe -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d $body
+$body = '{"adId":"ad_001","tenantId":"tenant_abc","violationType":"PROHIBITED_TERM","severity":"HIGH","detectedAt":"2024-03-15T10:30:00Z"}'; curl.exe -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d $body
 ```
 
 Unix / macOS:
