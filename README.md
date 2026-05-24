@@ -419,7 +419,8 @@ Você pode testar todos os cenários com `curl`. Se não tiver `curl`, use o [Po
 
 PowerShell (Windows):
 ```powershell
-curl.exe -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d '{\"adId\":\"ad_001\",\"tenantId\":\"tenant_abc\",\"violationType\":\"PROHIBITED_TERM\",\"severity\":\"HIGH\",\"detectedAt\":\"2024-03-15T10:30:00Z\"}'
+$body = '{"adId":"ad_001","tenantId":"tenant_abc","violationType":"PROHIBITED_TERM","severity":"HIGH","detectedAt":"2024-03-15T10:30:00Z"}'
+curl.exe -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d $body
 ```
 
 Unix / macOS:
@@ -430,7 +431,7 @@ curl -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: applic
 **Cenário 2 — Consultar o status do job criado acima** → Resposta esperada: `completed` ou `active`
 
 ```
-curl -s http://localhost:3000/jobs/ad_001|tenant_abc
+curl.exe -s http://localhost:3000/jobs/ad_001|tenant_abc
 ```
 
 ---
@@ -441,7 +442,8 @@ curl -s http://localhost:3000/jobs/ad_001|tenant_abc
 
 PowerShell (Windows):
 ```powershell
-curl.exe -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d '{\"adId\":\"ad_001\",\"tenantId\":\"tenant_abc\",\"severity\":\"HIGH\",\"detectedAt\":\"2024-03-15T10:30:00Z\"}'
+$body = '{"adId":"ad_001","tenantId":"tenant_abc","severity":"HIGH","detectedAt":"2024-03-15T10:30:00Z"}'
+curl.exe -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d $body
 ```
 
 Unix / macOS:
@@ -453,7 +455,8 @@ curl -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: applic
 
 PowerShell (Windows):
 ```powershell
-curl.exe -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d '{\"adId\":\"ad_001\",\"tenantId\":\"tenant_abc\",\"violationType\":\"PROHIBITED_TERM\",\"severity\":\"HIGH\",\"detectedAt\":\"2024-03-15T10:30:00Z\"}'
+$body = '{"adId":"ad_001","tenantId":"tenant_abc","violationType":"PROHIBITED_TERM","severity":"HIGH","detectedAt":"2024-03-15T10:30:00Z"}'
+curl.exe -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d $body
 ```
 
 Unix / macOS:
@@ -468,7 +471,7 @@ curl -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: applic
 **Cenário 5 — Verificar se a API está no ar** → Resposta esperada: `{ "status": "ok" }`
 
 ```
-curl -s http://localhost:3000/health
+curl.exe -s http://localhost:3000/health
 ```
 
 ---
