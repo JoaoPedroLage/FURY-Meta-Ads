@@ -409,52 +409,47 @@ Se um webhook idêntico chegar enquanto um job com esse ID ainda está `waiting`
 
 Você pode testar todos os cenários com `curl`. Se não tiver `curl`, use o [Postman](https://www.postman.com/) ou o [Insomnia](https://insomnia.rest/).
 
-```bash
-# ✅ Cenário 1 — Webhook válido (deve retornar 202)
-curl -s -X POST http://localhost:3000/webhook/violation \
-  -H "Content-Type: application/json" \
-  -d '{
-    "adId": "ad_001",
-    "tenantId": "tenant_abc",
-    "violationType": "PROHIBITED_TERM",
-    "severity": "HIGH",
-    "detectedAt": "2024-03-15T10:30:00Z"
-  }'
+> ✅ Todos os comandos abaixo funcionam no **Windows** (CMD e PowerShell) e no **Unix/macOS** — copie e cole diretamente no terminal.
 
-# ──────────────────────────────────────────────
+---
 
-# 🔍 Cenário 2 — Consultar status do job (use o jobId retornado acima)
+### Parte 1 — Fluxo principal (sucesso)
+
+**Cenário 1 — Enviar um webhook válido** → Resposta esperada: `202 Accepted`
+
+```
+curl -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d "{\"adId\":\"ad_001\",\"tenantId\":\"tenant_abc\",\"violationType\":\"PROHIBITED_TERM\",\"severity\":\"HIGH\",\"detectedAt\":\"2024-03-15T10:30:00Z\"}"
+```
+
+**Cenário 2 — Consultar o status do job criado acima** → Resposta esperada: `completed` ou `active`
+
+```
 curl -s http://localhost:3000/jobs/ad_001:tenant_abc
+```
 
-# ──────────────────────────────────────────────
+---
 
-# ❌ Cenário 3 — Payload inválido: campo "violationType" ausente (deve retornar 400)
-curl -s -X POST http://localhost:3000/webhook/violation \
-  -H "Content-Type: application/json" \
-  -d '{
-    "adId": "ad_001",
-    "tenantId": "tenant_abc",
-    "severity": "HIGH",
-    "detectedAt": "2024-03-15T10:30:00Z"
-  }'
+### Parte 2 — Cenários de erro
 
-# ──────────────────────────────────────────────
+**Cenário 3 — Payload inválido** (campo `violationType` ausente) → Resposta esperada: `400 Bad Request` com lista de erros por campo
 
-# ⚠️ Cenário 4 — Duplicata (rode o Cenário 1 novamente enquanto o job ainda está ativo)
-# Deve retornar 409 Conflict
-curl -s -X POST http://localhost:3000/webhook/violation \
-  -H "Content-Type: application/json" \
-  -d '{
-    "adId": "ad_001",
-    "tenantId": "tenant_abc",
-    "violationType": "PROHIBITED_TERM",
-    "severity": "HIGH",
-    "detectedAt": "2024-03-15T10:30:00Z"
-  }'
+```
+curl -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d "{\"adId\":\"ad_001\",\"tenantId\":\"tenant_abc\",\"severity\":\"HIGH\",\"detectedAt\":\"2024-03-15T10:30:00Z\"}"
+```
 
-# ──────────────────────────────────────────────
+**Cenário 4 — Job duplicado** (rode logo após o Cenário 1, enquanto o job ainda está ativo) → Resposta esperada: `409 Conflict`
 
-# 🏥 Cenário 5 — Health check
+```
+curl -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d "{\"adId\":\"ad_001\",\"tenantId\":\"tenant_abc\",\"violationType\":\"PROHIBITED_TERM\",\"severity\":\"HIGH\",\"detectedAt\":\"2024-03-15T10:30:00Z\"}"
+```
+
+---
+
+### Parte 3 — Health check
+
+**Cenário 5 — Verificar se a API está no ar** → Resposta esperada: `{ "status": "ok" }`
+
+```
 curl -s http://localhost:3000/health
 ```
 
