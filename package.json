@@ -1,0 +1,27 @@
+{
+  "name": "click-hero",
+  "version": "1.0.0",
+  "description": "FURY - Ad violation webhook processor with BullMQ job queue",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "worker": "ts-node-dev --respawn --transpile-only src/queues/takedown.worker.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "start:worker": "node dist/queues/takedown.worker.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.8",
+    "bullmq": "^5.7.8",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "ioredis": "^5.3.2",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.25",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.4.2"
+  }
+}
