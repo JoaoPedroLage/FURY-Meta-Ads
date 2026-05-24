@@ -203,6 +203,10 @@ O arquivo `.env` já vem com valores padrão que funcionam diretamente com o Doc
 
 **Com Docker (recomendado):**
 
+> ⚠️ **Antes de rodar o comando abaixo**, certifique-se de que o **Docker Desktop está aberto e em execução**.
+> Procure o ícone da baleia 🐳 na barra de tarefas — ele precisa estar estável (sem animação de carregamento).
+> Se não estiver aberto, inicie o Docker Desktop pelo menu Iniciar e aguarde até ele ficar pronto.
+
 ```bash
 docker compose up -d
 ```
