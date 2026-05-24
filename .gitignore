@@ -1,0 +1,98 @@
+# ──────────────────────────────────────────────
+# Dependências
+# ──────────────────────────────────────────────
+node_modules/
+.pnp
+.pnp.js
+
+# ──────────────────────────────────────────────
+# Build / compilação TypeScript
+# ──────────────────────────────────────────────
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# ──────────────────────────────────────────────
+# Variáveis de ambiente — NUNCA versionar .env
+# .env.example pode (e deve) ser versionado
+# ──────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+
+# ──────────────────────────────────────────────
+# Logs
+# ──────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ──────────────────────────────────────────────
+# Cobertura de testes
+# ──────────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ──────────────────────────────────────────────
+# Cache de ferramentas
+# ──────────────────────────────────────────────
+.npm
+.eslintcache
+.parcel-cache
+.turbo
+
+# ──────────────────────────────────────────────
+# Sistema operacional
+# ──────────────────────────────────────────────
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# ──────────────────────────────────────────────
+# Editores e IDEs
+# ──────────────────────────────────────────────
+
+# VSCode — manter apenas settings compartilháveis se necessário
+.vscode/*
+!.vscode/extensions.json
+
+# JetBrains (IntelliJ, WebStorm...)
+.idea/
+*.iml
+*.iws
+
+# Vim / Neovim
+*.swp
+*.swo
+*.swn
+
+# ──────────────────────────────────────────────
+# Docker volumes locais
+# ──────────────────────────────────────────────
+docker-volumes/
+
+# ──────────────────────────────────────────────
+# Misc
+# ──────────────────────────────────────────────
+*.pem
+*.key
+*.cert
