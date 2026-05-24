@@ -299,7 +299,7 @@ Você verá:
 
 | Código | Situação | Exemplo de resposta |
 |---|---|---|
-| `202 Accepted` | Job enfileirado com sucesso | `{ "jobId": "ad_abc123:tenant_xyz", "status": "queued" }` |
+| `202 Accepted` | Job enfileirado com sucesso | `{ "jobId": "ad_abc123|tenant_xyz", "status": "queued" }` |
 | `400 Bad Request` | Payload inválido ou incompleto | `{ "error": "Invalid payload", "details": { "violationType": ["Invalid enum value"] } }` |
 | `409 Conflict` | Job duplicado — mesmo `adId + tenantId` já está ativo | `{ "error": "Duplicate job", "jobId": "ad_abc123:tenant_xyz", "message": "..." }` |
 | `500 Internal Server Error` | Erro inesperado no servidor | `{ "error": "Failed to enqueue job" }` |
@@ -316,14 +316,14 @@ Você verá:
 
 **Exemplo:**
 ```
-GET http://localhost:3000/jobs/ad_abc123:tenant_xyz
+GET http://localhost:3000/jobs/ad_abc123|tenant_xyz
 ```
 
 **Resposta de sucesso (`200 OK`):**
 
 ```json
 {
-  "jobId": "ad_abc123:tenant_xyz",
+  "jobId": "ad_abc123|tenant_xyz",
   "status": "completed",
   "attempts": 1,
   "result": { "statusCode": 200 },
@@ -398,7 +398,7 @@ Se a Meta API responder com um erro **4xx** (ex: `400 Bad Request`, `403 Forbidd
 O ID de cada job é gerado a partir de `adId + tenantId`:
 
 ```
-jobId = "ad_abc123:tenant_xyz"
+jobId = "ad_abc123|tenant_xyz"
 ```
 
 Se um webhook idêntico chegar enquanto um job com esse ID ainda está `waiting`, `active` ou `delayed`, a API retorna `409 Conflict` — **o mesmo takedown não será executado duas vezes**. Isso protege contra reenvios acidentais ou retries do remetente.
@@ -409,8 +409,7 @@ Se um webhook idêntico chegar enquanto um job com esse ID ainda está `waiting`
 
 Você pode testar todos os cenários com `curl`. Se não tiver `curl`, use o [Postman](https://www.postman.com/) ou o [Insomnia](https://insomnia.rest/).
 
-> ✅ Todos os comandos abaixo funcionam no **Windows PowerShell** e no **Unix/macOS** — copie e cole diretamente no terminal.  
-> ⚠️ **Windows CMD** (prompt clássico `cmd.exe`) não é suportado — use o **PowerShell**.
+> Cada cenário abaixo traz dois blocos de comando — escolha o do seu terminal.
 
 ---
 
@@ -418,14 +417,20 @@ Você pode testar todos os cenários com `curl`. Se não tiver `curl`, use o [Po
 
 **Cenário 1 — Enviar um webhook válido** → Resposta esperada: `202 Accepted`
 
+PowerShell (Windows):
+```powershell
+curl.exe -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d '{\"adId\":\"ad_001\",\"tenantId\":\"tenant_abc\",\"violationType\":\"PROHIBITED_TERM\",\"severity\":\"HIGH\",\"detectedAt\":\"2024-03-15T10:30:00Z\"}'
 ```
+
+Unix / macOS:
+```bash
 curl -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d '{"adId":"ad_001","tenantId":"tenant_abc","violationType":"PROHIBITED_TERM","severity":"HIGH","detectedAt":"2024-03-15T10:30:00Z"}'
 ```
 
 **Cenário 2 — Consultar o status do job criado acima** → Resposta esperada: `completed` ou `active`
 
 ```
-curl -s http://localhost:3000/jobs/ad_001:tenant_abc
+curl -s http://localhost:3000/jobs/ad_001|tenant_abc
 ```
 
 ---
@@ -434,13 +439,25 @@ curl -s http://localhost:3000/jobs/ad_001:tenant_abc
 
 **Cenário 3 — Payload inválido** (campo `violationType` ausente) → Resposta esperada: `400 Bad Request` com lista de erros por campo
 
+PowerShell (Windows):
+```powershell
+curl.exe -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d '{\"adId\":\"ad_001\",\"tenantId\":\"tenant_abc\",\"severity\":\"HIGH\",\"detectedAt\":\"2024-03-15T10:30:00Z\"}'
 ```
+
+Unix / macOS:
+```bash
 curl -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d '{"adId":"ad_001","tenantId":"tenant_abc","severity":"HIGH","detectedAt":"2024-03-15T10:30:00Z"}'
 ```
 
 **Cenário 4 — Job duplicado** (rode logo após o Cenário 1, enquanto o job ainda está ativo) → Resposta esperada: `409 Conflict`
 
+PowerShell (Windows):
+```powershell
+curl.exe -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d '{\"adId\":\"ad_001\",\"tenantId\":\"tenant_abc\",\"violationType\":\"PROHIBITED_TERM\",\"severity\":\"HIGH\",\"detectedAt\":\"2024-03-15T10:30:00Z\"}'
 ```
+
+Unix / macOS:
+```bash
 curl -s -X POST http://localhost:3000/webhook/violation -H "Content-Type: application/json" -d '{"adId":"ad_001","tenantId":"tenant_abc","violationType":"PROHIBITED_TERM","severity":"HIGH","detectedAt":"2024-03-15T10:30:00Z"}'
 ```
 
