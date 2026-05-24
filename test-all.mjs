@@ -196,14 +196,17 @@ async function run() {
   // ── 10. Idempotência ─────────────────────────
   console.log("\n[ 10 ] Idempotência — mesmo adId+tenantId não duplica");
   {
+    // ID único por execução garante que o job nunca existe previamente
+    const runId = Date.now();
     const payload = {
-      adId: "ad_idem_99", tenantId: "tenant_idem_99",
+      adId: `ad_idem_${runId}`, tenantId: `tenant_idem_${runId}`,
       violationType: "BRAND_VIOLATION", severity: "CRITICAL",
       detectedAt: "2024-03-15T10:30:00Z",
     };
     const r1 = await POST("/webhook/violation", payload);
     assert("1ª tentativa → 202",              r1.status, 202);
 
+    // Segunda tentativa imediata — job certamente waiting/active
     const r2 = await POST("/webhook/violation", payload);
     assert("2ª tentativa (duplicata) → 409",  r2.status, 409);
     assertContains("mensagem Duplicate job",  r2.body,   "Duplicate job");
